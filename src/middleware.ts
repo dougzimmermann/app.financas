@@ -33,6 +33,12 @@ export async function middleware(request: NextRequest) {
     request.nextUrl.pathname.startsWith("/login") ||
     request.nextUrl.pathname.startsWith("/signup");
 
+  const isCallback = request.nextUrl.pathname.startsWith("/auth/callback");
+
+  if (isCallback) {
+    return supabaseResponse;
+  }
+
   if (!user && !isAuthPage) {
     return NextResponse.redirect(new URL("/login", request.url));
   }
