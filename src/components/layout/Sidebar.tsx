@@ -6,7 +6,7 @@ import { usePathname, useRouter } from "next/navigation";
 import { createClient } from "@/lib/supabase/client";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
-import { useToast } from "@/hooks/use-toast";
+import { useTheme } from "./ThemeProvider";
 import {
   LayoutDashboard,
   List,
@@ -14,6 +14,8 @@ import {
   TrendingUp,
   Menu,
   X,
+  Sun,
+  Moon,
 } from "lucide-react";
 
 const navItems = [
@@ -54,7 +56,7 @@ function NavLink({
 export function Sidebar() {
   const pathname = usePathname();
   const router = useRouter();
-  const { toast } = useToast();
+  const { theme, toggleTheme } = useTheme();
   const [mobileOpen, setMobileOpen] = useState(false);
 
   async function handleLogout() {
@@ -86,7 +88,18 @@ export function Sidebar() {
         ))}
       </nav>
 
-      <div className="px-3 py-4 border-t border-border">
+      <div className="px-3 py-4 border-t border-border space-y-1">
+        <button
+          onClick={toggleTheme}
+          className="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium text-muted-foreground hover:bg-muted hover:text-foreground transition-all duration-150 w-full cursor-pointer"
+        >
+          {theme === "dark" ? (
+            <Sun className="w-4 h-4 shrink-0" />
+          ) : (
+            <Moon className="w-4 h-4 shrink-0" />
+          )}
+          {theme === "dark" ? "Modo claro" : "Modo escuro"}
+        </button>
         <button
           onClick={handleLogout}
           className="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium text-muted-foreground hover:bg-muted hover:text-foreground transition-all duration-150 w-full cursor-pointer"
