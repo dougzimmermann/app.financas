@@ -47,7 +47,7 @@ export function LoginForm() {
           <div className="w-9 h-9 rounded-lg bg-primary flex items-center justify-center">
             <TrendingUp className="w-5 h-5 text-white" />
           </div>
-          <span className="text-xl font-bold tracking-tight">Finanças</span>
+          <span className="text-xl font-bold tracking-tight">Finanças ON</span>
         </div>
         <h1 className="text-2xl font-bold tracking-tight">Bem-vindo de volta</h1>
         <p className="text-muted-foreground text-sm mt-1">
