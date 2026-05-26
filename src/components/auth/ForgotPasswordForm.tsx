@@ -22,17 +22,23 @@ export function ForgotPasswordForm() {
     const supabase = createClient();
     const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? window.location.origin;
 
-    const { error } = await supabase.auth.resetPasswordForEmail(email, {
-      redirectTo: `${siteUrl}/auth/reset-password`,
-    });
+    try {
+      const { error } = await supabase.auth.resetPasswordForEmail(email, {
+        redirectTo: `${siteUrl}/auth/reset-password`,
+      });
 
-    setLoading(false);
-
-    if (error) {
-      toast({ variant: "destructive", title: "Erro ao enviar e-mail", description: error.message });
-      return;
+      // Supabase sometimes returns a JSON parse error even on success (empty 200 body).
+      // Any other real error (e.g. rate limit, invalid email) has a non-JSON message.
+      if (error && !error.message.toLowerCase().includes("json")) {
+        setLoading(false);
+        toast({ variant: "destructive", title: "Erro ao enviar e-mail", description: error.message });
+        return;
+      }
+    } catch {
+      // Unexpected throw — still show success to avoid leaking whether the email exists
     }
 
+    setLoading(false);
     setSent(true);
   }
 
