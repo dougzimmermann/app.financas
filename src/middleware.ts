@@ -31,15 +31,19 @@ export async function middleware(request: NextRequest) {
 
   const isAuthPage =
     request.nextUrl.pathname.startsWith("/login") ||
-    request.nextUrl.pathname.startsWith("/signup");
+    request.nextUrl.pathname.startsWith("/signup") ||
+    request.nextUrl.pathname.startsWith("/forgot-password");
 
   const isCallback = request.nextUrl.pathname.startsWith("/auth/callback");
+
+  // /update-password requires a recovery session — let authenticated users through
+  const isUpdatePassword = request.nextUrl.pathname.startsWith("/update-password");
 
   if (isCallback) {
     return supabaseResponse;
   }
 
-  if (!user && !isAuthPage) {
+  if (!user && !isAuthPage && !isUpdatePassword) {
     return NextResponse.redirect(new URL("/login", request.url));
   }
 
