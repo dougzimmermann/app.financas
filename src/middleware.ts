@@ -34,7 +34,9 @@ export async function middleware(request: NextRequest) {
     request.nextUrl.pathname.startsWith("/signup") ||
     request.nextUrl.pathname.startsWith("/forgot-password");
 
-  const isCallback = request.nextUrl.pathname.startsWith("/auth/callback");
+  const isCallback =
+    request.nextUrl.pathname.startsWith("/auth/callback") ||
+    request.nextUrl.pathname.startsWith("/auth/reset-password");
 
   // /update-password requires a recovery session — let authenticated users through
   const isUpdatePassword = request.nextUrl.pathname.startsWith("/update-password");
